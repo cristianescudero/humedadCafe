@@ -1,0 +1,24 @@
+En este txt se explica la organización de la base de datos
+
+los archivos con nombre "BaseDatos%HistWFHogSiftConCascara2Clases"  contienen descriptores en RGB
+con 2 clases (humedad adecuada 10%,11%,12%) (humedad no adecuada 13% en adelante)
+se concatenó de la siguiente manera
+
+X = np.hstack([y,descHistograma,descFourier,descWavelet,descHog,descSift])
+
+por tanto
+
+Primera Columna contiene las etiquetas
+las siguientes 45 columnas corresponden a Histograma (15 bins por canal)
+Las siguientes 12 a momentos estadísticos de fourier
+Las siguientes 36 a momentos estadísticos de wavelet.
+Las siguientes 2 a momentos estadísticos de HOG
+Las siguientes 12 a momentos estadísticos de sift
+
+
+los archivos con nombre "BaseDatos%HistWFHogSiftConCascara18Clases" contienen los mismos descriptores
+concatenados de la misma forma, la diferencia es que tiene 18 clases, que corresponden
+a cada nivel de humedad que contiene la base de datos con cascara
+
+
+Todos las las bases de datos están repetidas tanto para .csv como para .mat

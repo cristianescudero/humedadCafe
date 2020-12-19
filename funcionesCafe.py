@@ -98,5 +98,23 @@ def siftGrayDescriptor(gray,prueba):  #computa sift para un solo canal
 def siftDescriptor(img,prueba):
     return [siftGrayDescriptor(img[:,:,0],0),siftGrayDescriptor(img[:,:,1],0),siftGrayDescriptor(img[:,:,2],0)]
 
+def descriptorHistWavelet(img,bins):
+    (c2, hc2) = np.histogram((img[:, :, 1]), bins)
+    (c1, hc1) = np.histogram((img[:, :, 0]), bins)
+
+    coeffs1 = pywt.dwt2(img[:, :, 1], 'bior1.3')
+    LL, (LH1, HL1, HH) = coeffs1
+    slh1 = scipy.stats.skew(np.ravel(LH1))
+    shl1 = scipy.stats.skew(np.ravel(HL1))
+    mhl1 = scipy.mean(np.ravel(HL1))
+
+    coeffs2 = pywt.dwt2(img[:, :, 2], 'bior1.3')
+    LL, (LH2, HL2, HH) = coeffs2
+    slh2 = scipy.stats.skew(np.ravel(LH2))
+    shl2 = scipy.stats.skew(np.ravel(HL2))
+    mhl2 = scipy.mean(np.ravel(HL2))
+
+    return [c2[4],c2[3],c2[5],c2[2],c1[0],slh1,shl1,mhl1,slh2,shl2,mhl2]
+
 
 

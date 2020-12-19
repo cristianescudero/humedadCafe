@@ -62,10 +62,10 @@ for root, dirnames, filenames in os.walk(imgpath):
 
 
             if contador % 10 == 0:
-                scipy.io.savemat('BaseDatos50HistWFHogSift.mat',{'DSIFT': descSIFTAcumulado,'DHOG': descHOGAcumulado,'DH': descHistAcumulado, 'DF': descFourAcumulado, 'DW': descWaveAcumulado, 'y': y,'conteo': conteo, 'nombres': nombres})
+ #               scipy.io.savemat('BaseDatos50HistWFHogSift.mat',{'DSIFT': descSIFTAcumulado,'DHOG': descHOGAcumulado,'DH': descHistAcumulado, 'DF': descFourAcumulado, 'DW': descWaveAcumulado, 'y': y,'conteo': conteo, 'nombres': nombres})
                 print(contador)
 
-scipy.io.savemat('BaseDatos50HistWFHogSift.mat',{'DSIFT': descSIFTAcumulado,'DHOG': descHOGAcumulado,'DH': descHistAcumulado, 'DF': descFourAcumulado, 'DW': descWaveAcumulado, 'y': y,'conteo': conteo, 'nombres': nombres})
+#scipy.io.savemat('BaseDatos50HistWFHogSift.mat',{'DSIFT': descSIFTAcumulado,'DHOG': descHOGAcumulado,'DH': descHistAcumulado, 'DF': descFourAcumulado, 'DW': descWaveAcumulado, 'y': y,'conteo': conteo, 'nombres': nombres})
 elapsed_time = (time() - start_time)/60
 print('tiempo (min) = ' ,elapsed_time)
 

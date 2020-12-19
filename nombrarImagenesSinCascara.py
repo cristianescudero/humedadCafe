@@ -23,7 +23,10 @@ for root, dirnames, filenames in os.walk(imgpath):
             indexFotos = indexFotos + 1
             #print(indexFotos)
             img = cv2.imread(filepath)
-            cv2.imwrite(nombre, img)
+            #cv2.imwrite(nombre, img)
+
+            cv2.imwrite('D:\Bases datos\Cafe ML\sin cascara\ ' + nombre, img)
+
     indexCarpetas = indexCarpetas + 1
 
 
@@ -52,5 +55,6 @@ for root, dirnames, filenames in os.walk(imgpath):
             indexFotos = indexFotos + 1
             #print(indexFotos)
             img  = cv2.imread(filepath)
-            cv2.imwrite(nombre, img)
+            #cv2.imwrite(nombre, img)
+            cv2.imwrite('D:\Bases datos\Cafe ML\sin cascara\ ' + nombre, img)
     indexCarpetas = indexCarpetas + 1

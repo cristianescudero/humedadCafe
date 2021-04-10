@@ -3,12 +3,16 @@ import scipy.io
 from sklearn import metrics, neighbors
 import pickle
 
+#Se carga modelo knn con 10 vecinos, despues se carga la base de datos que se generó en el proceso de extraccióno de características
 mdl = neighbors.KNeighborsClassifier(n_neighbors=10)
 mat = scipy.io.loadmat('Base70FinalHistWavReducidaConCascara.mat')
 print(mat.keys())
 X = mat['descriptor']
 y = mat['y']
 
+#Se entrena el modelo con mdl.fit, como parametro de entrada se ingresa la Matriz X y las etiquetas Y, se usa np.ravel
+#Para que las etiquetas tengan la forma en una dimensión como lo requiere la función fit.
+#Despues se guarda el modelo en un archivo .pkl. Si en un futuro se requiere predeciir una nueva muestra, solo se necesita cargar el modelo 
 model = mdl.fit(X,np.ravel(y))
 with open("modeloKNN18Clases70ConCascara.pkl", 'wb') as file:
     pickle.dump(model, file)
@@ -21,7 +25,7 @@ with open("modeloKNN18Clases70ConCascara.pkl", 'wb') as file:
 
 
 
-"""
+""" Esta parte del codigo se puede omitir, solo se guardó como muestra para pruebas
 #Con esta parte de código se genero la matriz X que permite entrenar el modelo de clasificación
 dirname = os.path.join(os.getcwd(), 'D:\Bases datos\Cafe ML\con cascara')
 

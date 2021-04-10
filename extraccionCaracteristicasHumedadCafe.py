@@ -5,21 +5,25 @@ from time import time
 import funcionesCafe
 from multiprocessing.pool import ThreadPool
 
-
+#Se Carga la dirección donde estan guardadas las imagenes
 dirname = os.path.join(os.getcwd(), 'D:\Bases datos\CafeProcesado\con cascara')
 
 imgpath = dirname + os.sep
 print("leyendo imagenes de ----> ",imgpath)
+#El mejor porcentaje de tamaño es 70, el numero de bins se escoge en pruebas de validación
 porcentajeTamano = 50
 numeroBinsHistograma = 15
+#Para quue el codigo sea más rapido, se correo por hilos, cada hilo extrae un descriptor.
 hiloW = ThreadPool(processes=1)
 hiloF = ThreadPool(processes=1)
 hiloH = ThreadPool(processes=1)
 hiloHOG1 = ThreadPool(processes=1)
 hiloSIFT1 = ThreadPool(processes=1)
 
+#Se generan las variables donde se acumularan los descriptores
 descSIFTAcumulado = [];descHOGAcumulado = [];descHistAcumulado = [];descFourAcumulado = [];descWaveAcumulado = [];y = [];clase = -1 ; conteo =[];contador = 0;nombres =[];
 start_time = time()
+#Se recorre cada carpeta que corresponde a cada clase
 for root, dirnames, filenames in os.walk(imgpath):
     print("Se encuentra en la carpeta ----> ",root)
     clase = clase + 1
@@ -29,21 +33,23 @@ for root, dirnames, filenames in os.walk(imgpath):
             filepath = os.path.join(root, filename)
             img  = cv2.imread(filepath)                  #Lee imagen en RGB
 
-            img = funcionesCafe.reducirImagen(img,porcentajeTamano) #disminuye el tamaño
+            img = funcionesCafe.reducirImagen(img,porcentajeTamano) #disminuye el tamaño para disminuir la cantidad de datos a procesar
 
-
+            #Se ejecuta cada función quue extrae características en hilos independientes
             hiloWavelet = hiloW.apply_async(funcionesCafe.wavelet, args=(img, 0))
             hiloFourier = hiloF.apply_async(funcionesCafe.fourier, args=(img, 0))
             hiloHistograma = hiloH.apply_async(funcionesCafe.histograma,args=(img,numeroBinsHistograma))
             hiloHOG = hiloHOG1.apply_async(funcionesCafe.hogDescriptor,args=(img, 0))
             hiloSIFT = hiloSIFT1.apply_async(funcionesCafe.siftDescriptor,args=(img, 0))
 
+            #Se usa un get para obtener los resultados de cada función
             descHistActual = hiloHistograma.get()
             descFourActual = hiloFourier.get()
             descSiftActual = hiloSIFT.get()
             descWaveActual = hiloWavelet.get()
             descHogActual = hiloHOG.get()
-
+            
+            #Se concatenan los datos 
             descFourActual = np.ravel(descFourActual)
             descWaveActual = np.ravel(descWaveActual)
             descSiftActual = np.ravel(descSiftActual)
@@ -53,14 +59,15 @@ for root, dirnames, filenames in os.walk(imgpath):
             descWaveAcumulado.append(descWaveActual)
             descHOGAcumulado.append(descHogActual)
             descSIFTAcumulado.append(descSiftActual)
-
+            
+            #se concatenan las etiquetas
             contador = contador + 1
             conteo.append(contador)
             y.append(clase)
             nombres.append(filename)
 
 
-
+            #Cada 10 muestras se guarda la base de datos
             if contador % 10 == 0:
  #               scipy.io.savemat('BaseDatos50HistWFHogSift.mat',{'DSIFT': descSIFTAcumulado,'DHOG': descHOGAcumulado,'DH': descHistAcumulado, 'DF': descFourAcumulado, 'DW': descWaveAcumulado, 'y': y,'conteo': conteo, 'nombres': nombres})
                 print(contador)
